@@ -1,8 +1,13 @@
 *********************************
 1. Fit patient slp60m
 slp60m1.mat, slp60m1.info, the original data.
-slp60m1_2.mat: fit q with multiple starting points(4), q threshold 0.05, using fitLung_slp60m1.m.
-slp60m1_3.mat: using slp60m1_2.mat, using fitSpO2_slp60m1.m.
+(1) 
+Input: slp60m1.mat 
+run fitLung_slp60m1.m, fit q with multiple starting points(4), q threshold 0.05;
+output: slp60m1_2.mat
+(2)
+Input: slp60m1_2.mat
+run fitSpO2_slp60m1.m: 
 
 %ialpha=[0.28 3.9724 25 60];
 %% fit the patient
@@ -12,6 +17,21 @@ parL.Q_CO=ialpha(1,2)/60;
 x0(6)=ialpha(1,3);
 x0(7)=ialpha(1,4);
  to fit SpO2 tshift=-11.5;
+ 
+output: slp60m1_3.mat
+slp60m1_3_fixed.mat, after fixing the lung model.
+
+load('H:\GitHub\RespiratoryPacemakerModel\patients\slp60m1_3_fixed.mat')
+q = xAux(:,4);
+S_Ao=xAux(:,14);
+p_Ao=x(:,7);
+R_p=xAux(:,16);
+rec=[itdata',iflow',iiSpO2',mSpO2'];
+sim=[t,q,R_p,S_Ao.*100];
+sim=sim(1:5:end,:);
+csvwrite('sim0_fixed.csv',sim);
+csvwrite('rec0_fixed.csv',rec);
+
 **************************************
 2. Fit patient slp67xm
 slp67xm.mat, slp67xm.info, the original data.

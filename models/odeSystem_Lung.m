@@ -43,8 +43,8 @@ dx_mdt=-parL.k1.*x_m+parL.k2.*R_p;
 
 dP_Adt = (parL.P_m.*parL.E.*Q_A)./P_A + dP_Ldt;
 
-df_odt = (1./V_A).*(f_o_cos.*q + parL.Do.*(p_bo - p_ao) - f_o.*(parL.Dc.*(p_bc - p_ac) + parL.Do.*(p_bo - p_ao)));
-df_cdt = (1./V_A).*(f_c_cos.*q + parL.Dc.*(p_bc - p_ac) - f_c.*(parL.Do.*(p_bo - p_ao) + parL.Dc.*(p_bc - p_ac)));
+df_odt = (1./V_A).*((f_o_cos-f_o).*q + parL.Do.*(p_bo - p_ao) - f_o.*(parL.Dc.*(p_bc - p_ac) + parL.Do.*(p_bo - p_ao)));
+df_cdt = (1./V_A).*((f_c_cos-f_c).*q + parL.Dc.*(p_bc - p_ac) - f_c.*(parL.Do.*(p_bo - p_ao) + parL.Dc.*(p_bc - p_ac)));
 
 df_dodt = (1./parL.V_d).*(f_do_cos - f_do).*(abs(q));
 df_dcdt = (1./parL.V_d).*(f_dc_cos - f_dc).*(abs(q));
