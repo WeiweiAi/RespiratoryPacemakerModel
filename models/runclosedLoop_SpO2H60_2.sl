@@ -19,7 +19,7 @@ mkdir -vp ${working_path}  #This will create the directory and move you into it.
 cp ${script_path}${model_name}.slx  ${working_path}${model_name}${SLURM_ARRAY_TASK_ID}.slx  		#This will take a copy of the simulink model into the running directory.
 cp ${script_path}${para_name}.mat   ${working_path}${para_name}.mat  		#This will take a copy of the parameter into the running directory.
 export TMPDIR=${working_path} #Stop matlab temp files clashing.
-module load MATLAB/2019b
+module load MATLAB/2020b
 matlab -nojvm -nodisplay -r "run('${script_path}runClosedLoopSo2_60_2.m');exit;"
 rm -r ${working_path}
 

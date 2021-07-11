@@ -31,7 +31,7 @@ sim=[t,q,R_p,S_Ao.*100];
 sim=sim(1:5:end,:);
 csvwrite('sim0_fixed.csv',sim);
 csvwrite('rec0_fixed.csv',rec);
-
+Fig 7 in CBM
 **************************************
 2. Fit patient slp67xm
 slp67xm.mat, slp67xm.info, the original data.
@@ -53,18 +53,116 @@ parL2.mat: Ki=0.002;Kp=0.4;LRI=6.5;SAo_set=96;fitted, the min, MO 0.128L/min CO 
 parL3.mat: Ki=0.002;Kp=0.4;LRI=6.5;SAo_set=96;typical MO,MC, CO (MO 0.25 L/min CO 5 L/min), MC=1.3097517926876717E-4,Mo=-1.6371897408595895E-4,Co=0.0833
 *********************************************************************************************************************************************
 4.Closed-loop validation
-closedLoop.slx 
+closedLoop.slx,  the sensing variable is mean partial pressure;
 simX0, fitted validation, parL.mat
 simX1, use typical MO,MC, CO, parL1.mat
 simX2, fitted validation, parL.mat, fixed pacing
 simX3, use typical MO,MC, CO, parL1.mat,fixed pacing
 simX4, use typical MO,MC, CO, parL1.mat,fixed pacing, LRI=5.858609467017760, Kp=0.014878141945917
 
-closedLoop_SpO2.slx
+closedLoop_SpO2.slx, change the sensing variables to O2 saturation rather than partial pressure
 simX5, parL2.mat, fixed pacing
 simX6, parL2.mat, adaptive pacing
 simX7, parL3.mat, fixed pacing
 simX8, parL3.mat, adaptive pacing
+
+After fixing the lung model.
+simX5_fixed, parL2.mat, fixed pacing
+simX6_fixed, parL2.mat, adaptive pacing
+simX7_fixed, parL3.mat, fixed pacing
+simX8_fixed, parL3.mat, adaptive pacing
+
+load('simXi7_fixed.mat')
+load('simX7_fixed.mat')
+tstart=40; tend=1100;step=50;
+istart0=find(simX(1,:)>tstart,1,'first');
+iend0=find(simX(1,:)>tend,1,'first');
+t0=simX(1,istart0:step:iend0);
+Rpi=simXi(2,istart0:step:iend0);
+msAoi=simXi(42,istart0:step:iend0)*100;
+Rp0=simX(41,istart0:step:iend0);
+lamda0=simX(42,istart0:step:iend0);
+pace0=simX(43,istart0:step:iend0);
+msAo0=simX(45,istart0:step:iend0)*100;
+DSense0=simX(47,istart0:step:iend0);
+err0=abs(simX(48,istart0:step:iend0)./96)*100;
+setp=msAo0-msAo0+96;
+data0=[t0',Rp0',Rpi',lamda0',pace0',DSense0',err0',msAoi',msAo0',setp'];
+csvwrite('dataHD0fixed.csv',data0);
+
+load('simXi5_fixed.mat')
+load('simX5_fixed.mat')
+tstart=40; tend=1100;step=50;
+istart0=find(simX(1,:)>tstart,1,'first');
+iend0=find(simX(1,:)>tend,1,'first');
+t0=simX(1,istart0:step:iend0);
+Rpi=simXi(2,istart0:step:iend0);
+msAoi=simXi(42,istart0:step:iend0)*100;
+Rp0=simX(41,istart0:step:iend0);
+lamda0=simX(42,istart0:step:iend0);
+pace0=simX(43,istart0:step:iend0);
+msAo0=simX(45,istart0:step:iend0)*100;
+DSense0=simX(47,istart0:step:iend0);
+err0=abs(simX(48,istart0:step:iend0)./96)*100;
+setp=msAo0-msAo0+96;
+data0=[t0',Rp0',Rpi',lamda0',pace0',DSense0',err0',msAoi',msAo0',setp'];
+csvwrite('dataLD0fixed.csv',data0);
+
+load('simXi8_fixed.mat')
+load('simX8_fixed.mat')
+tstart=40; tend=1100;step=50;
+istart0=find(simX(1,:)>tstart,1,'first');
+iend0=find(simX(1,:)>tend,1,'first');
+t0=simX(1,istart0:step:iend0);
+Rpi=simXi(2,istart0:step:iend0);
+msAoi=simXi(42,istart0:step:iend0)*100;
+Rp0=simX(41,istart0:step:iend0);
+lamda0=simX(42,istart0:step:iend0);
+pace0=simX(43,istart0:step:iend0);
+msAo0=simX(45,istart0:step:iend0)*100;
+DSense0=simX(47,istart0:step:iend0);
+err0=abs(simX(48,istart0:step:iend0)./96)*100;
+setp=msAo0-msAo0+96;
+data0=[t0',Rp0',Rpi',lamda0',pace0',DSense0',err0',msAoi',msAo0',setp'];
+csvwrite('dataHD1fixed.csv',data0);
+
+load('simXi6_fixed.mat')
+load('simX6_fixed.mat')
+tstart=40; tend=1100;step=50;
+istart0=find(simX(1,:)>tstart,1,'first');
+iend0=find(simX(1,:)>tend,1,'first');
+t0=simX(1,istart0:step:iend0);
+Rpi=simXi(2,istart0:step:iend0);
+msAoi=simXi(42,istart0:step:iend0)*100;
+Rp0=simX(41,istart0:step:iend0);
+lamda0=simX(42,istart0:step:iend0);
+pace0=simX(43,istart0:step:iend0);
+msAo0=simX(45,istart0:step:iend0)*100;
+DSense0=simX(47,istart0:step:iend0);
+err0=abs(simX(48,istart0:step:iend0)./96)*100;
+setp=msAo0-msAo0+96;
+data0=[t0',Rp0',Rpi',lamda0',pace0',DSense0',err0',msAoi',msAo0',setp'];
+csvwrite('dataLD1fixed.csv',data0);
+
+load('simXi8_fixed.mat')
+load('simX8_fixed.mat')
+tstart=160; tend=250;step=4;
+istart0=find(simX(1,:)>tstart,1,'first');
+iend0=find(simX(1,:)>tend,1,'first');
+t0=simX(1,istart0:step:iend0);
+Rpi=simXi(2,istart0:step:iend0);
+msAoi=simXi(42,istart0:step:iend0)*100;
+Rp0=simX(41,istart0:step:iend0);
+lamda0=simX(42,istart0:step:iend0);
+pace0=simX(43,istart0:step:iend0);
+msAo0=simX(45,istart0:step:iend0)*100;
+DSense0=simX(47,istart0:step:iend0);
+err0=abs(simX(48,istart0:step:iend0)./96)*100;
+q1=simX(28,istart0:step:iend0);
+threshold=q1-q1+0.65;
+data0=[t0',Rp0',Rpi',lamda0',pace0',DSense0',err0',msAoi',msAo0',q1',threshold'];
+csvwrite('dataHDp1fixed.csv',data0);
+
 *********************************************************
 5.Devices parametrization:
 closedLoop_SpO2L.slx, closedLoop_SpO2H.slx;
