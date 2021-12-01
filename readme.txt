@@ -23,15 +23,31 @@ slp60m1_3_fixed.mat, after fixing the lung model.
 
 load('H:\GitHub\RespiratoryPacemakerModel\patients\slp60m1_3_fixed.mat')
 q = xAux(:,4);
+P_L = xAux(:,1);
+P_A= x(:,1);
 S_Ao=xAux(:,14);
 p_Ao=x(:,7);
 R_p=xAux(:,16);
 rec=[itdata',iflow',iiSpO2',mSpO2'];
-sim=[t,q,R_p,S_Ao.*100];
+sim=[t,q,R_p,S_Ao.*100, P_A,P_L];
 sim=sim(1:5:end,:);
-csvwrite('sim0_fixed.csv',sim);
-csvwrite('rec0_fixed.csv',rec);
+csvwrite('sim0fixed.csv',sim);
+csvwrite('rec0fixed.csv',rec);
 Fig 7 in CBM
+
+load('H:\GitHub\RespiratoryPacemakerModel\patients\slp67xm_6.mat')
+q = xAux(:,4);
+P_L = xAux(:,1);
+P_A= x(:,1);
+S_Ao=xAux(:,14);
+p_Ao=x(:,7);
+R_p=xAux(:,16);
+rec=[itdata',iflow',iiSpO2'];
+sim=[t,q,R_p,S_Ao.*100, P_A,P_L];
+sim=sim(1:5:end,:);
+%csvwrite('sim0fixed.csv',sim);
+csvwrite('recslp67xm.csv',rec);
+Fig 9 in CBM
 **************************************
 2. Fit patient slp67xm
 slp67xm.mat, slp67xm.info, the original data.
@@ -167,6 +183,46 @@ csvwrite('dataHDp1fixed.csv',data0);
 5.Devices parametrization:
 closedLoop_SpO2L.slx, closedLoop_SpO2H.slx;
 runClosedLoopSo2_30.m, runClosedLoopSo2_30_2.m, runClosedLoopSo2_30_3.m, runClosedLoopSo2_60.m, runClosedLoopSo2_60_2.m
+
+filename='SpO2L30';
+test=['closedLoop_' filename];
+load(['H:\GitHub\RespiratoryPacemakerModel\closedLoop\fixed\' test '\simresults_req7.mat'])
+kp=history.samples(:,1);
+lri=history.samples(:,end);
+rob=history.rob;
+data=[kp,lri,rob];
+%scatter3(kp,lri,rob)
+csvwrite([filename 'fixed.csv'],data);
+figure; 
+scatter(kp,lri,[],rob)
+colorbar
+
+filename='SpO2H30';
+test=['closedLoop_' filename];
+load(['H:\GitHub\RespiratoryPacemakerModel\closedLoop\fixed\' test '\simresults_req7.mat'])
+kp=history.samples(:,1);
+lri=history.samples(:,end);
+rob=history.rob;
+data=[kp,lri,rob];
+%scatter3(kp,lri,rob)
+csvwrite([filename 'fixed.csv'],data);
+figure; 
+scatter(kp,lri,[],rob)
+colorbar
+
+foldername='SpO2H30_3';
+test=['closedLoop_' foldername];
+for n=1:16
+filename= sprintf('simresults_req%d.mat',n); 
+load(['H:\GitHub\RespiratoryPacemakerModel\closedLoop\fixed\' test '\' filename])
+rob=history.rob;
+if min(rob)<=0
+a(n,1)=0;
+else
+a(n,1)=1;
+end
+end
+
 ****************************************************************************************************************************
 6. Data for the figures in the paper
 Fig. 2(a) rec0.csv, sim0.csv;
